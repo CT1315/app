@@ -1,0 +1,156 @@
+@use '@/styles/variables.scss' as *;
+
+.pageContainer {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #fff5f5 0%, $color-bg-page 100%);
+  padding: 0 $page-padding;
+  padding-top: 120rpx;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 48rpx;
+
+  .title {
+    font-size: 48rpx;
+    font-weight: 700;
+    color: $color-text-primary;
+    margin-bottom: 16rpx;
+  }
+
+  .subtitle {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+  }
+}
+
+.modeSelection {
+  display: flex;
+  gap: $spacing-md;
+  margin-bottom: 48rpx;
+
+  .modeCard {
+    flex: 1;
+    height: 200rpx;
+    border-radius: $radius-lg;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-base;
+
+    &.truth {
+      background: linear-gradient(135deg, $color-truth 0%, $color-truth-light 100%);
+      box-shadow: 0 8rpx 24rpx rgba(255, 107, 107, 0.3);
+    }
+
+    &.dare {
+      background: linear-gradient(135deg, $color-dare 0%, $color-dare-light 100%);
+      box-shadow: 0 8rpx 24rpx rgba(78, 205, 196, 0.3);
+    }
+
+    &.selected {
+      transform: scale(1.05);
+    }
+
+    .modeEmoji {
+      font-size: 64rpx;
+      margin-bottom: 12rpx;
+    }
+
+    .modeName {
+      font-size: $font-size-lg;
+      font-weight: 600;
+      color: $color-text-white;
+    }
+  }
+}
+
+.drawButton {
+  width: 100%;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-truth 0%, $color-dare 100%);
+  border-radius: $radius-button;
+  color: $color-text-white;
+  font-size: $font-size-lg;
+  font-weight: 600;
+  margin-bottom: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(255, 107, 107, 0.4);
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+}
+
+.resultCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: 48rpx 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: $shadow-card;
+  text-align: center;
+
+  .resultType {
+    display: inline-block;
+    padding: 12rpx 32rpx;
+    border-radius: $radius-button;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $color-text-white;
+    margin-bottom: 32rpx;
+
+    &.truth {
+      background: $color-truth;
+    }
+
+    &.dare {
+      background: $color-dare;
+    }
+  }
+
+  .resultContent {
+    font-size: $font-size-xl;
+    font-weight: 500;
+    color: $color-text-primary;
+    line-height: 1.6;
+    min-height: 120rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.nextButton {
+  width: 100%;
+  height: $button-height-md;
+  background: $color-bg-card;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-button;
+  color: $color-text-primary;
+  font-size: $font-size-md;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-base;
+
+  &:active {
+    background: $color-bg-hover;
+  }
+}
+
+.tip {
+  text-align: center;
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: 32rpx;
+}

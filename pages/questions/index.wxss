@@ -1,0 +1,136 @@
+/* questions.wxss */
+.page-container {
+  min-height: 100vh;
+  background-color: #F8F9FA;
+  padding: 32rpx;
+}
+
+.tab-bar {
+  display: flex;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 8rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.tab-item {
+  flex: 1;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #636E72;
+  transition: all 0.25s;
+}
+
+.tab-item.active {
+  background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
+  color: #fff;
+}
+
+.category-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 32rpx;
+}
+
+.category-item {
+  padding: 16rpx 32rpx;
+  background: #fff;
+  border-radius: 48rpx;
+  font-size: 24rpx;
+  color: #636E72;
+  border: 2rpx solid #E5E6EB;
+  transition: all 0.25s;
+}
+
+.category-item.active {
+  background: #FF6B6B;
+  color: #fff;
+  border-color: #FF6B6B;
+}
+
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.question-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.question-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.question-tag {
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #fff;
+  margin-right: 16rpx;
+}
+
+.question-tag.truth {
+  background: #FF6B6B;
+}
+
+.question-tag.dare {
+  background: #4ECDC4;
+}
+
+.level-tag {
+  padding: 6rpx 16rpx;
+  border-radius: 24rpx;
+  font-size: 20rpx;
+  border: 1rpx solid #E5E6EB;
+  color: #636E72;
+}
+
+.level-tag.easy {
+  color: #27AE60;
+  border-color: #27AE60;
+}
+
+.level-tag.medium {
+  color: #F39C12;
+  border-color: #F39C12;
+}
+
+.level-tag.hard {
+  color: #E74C3C;
+  border-color: #E74C3C;
+}
+
+.question-content {
+  font-size: 28rpx;
+  color: #2D3436;
+  line-height: 1.6;
+}
+
+.empty-tip {
+  text-align: center;
+  padding: 100rpx 0;
+  color: #B2BEC3;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+}

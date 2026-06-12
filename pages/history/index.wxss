@@ -1,0 +1,104 @@
+/* history.wxss */
+.page-container {
+  min-height: 100vh;
+  background-color: #F8F9FA;
+  padding: 32rpx;
+}
+
+.clear-button {
+  width: 100%;
+  height: 80rpx;
+  background: #fff;
+  border: 2rpx solid #E5E6EB;
+  border-radius: 48rpx;
+  color: #636E72;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32rpx;
+}
+
+.clear-button:active {
+  background: #f2f3f5;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.history-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.history-tag {
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #fff;
+}
+
+.history-tag.truth {
+  background: #FF6B6B;
+}
+
+.history-tag.dare {
+  background: #4ECDC4;
+}
+
+.history-time {
+  font-size: 22rpx;
+  color: #B2BEC3;
+}
+
+.history-content {
+  font-size: 28rpx;
+  color: #2D3436;
+  line-height: 1.6;
+}
+
+.empty-tip {
+  text-align: center;
+  padding: 150rpx 0;
+  color: #B2BEC3;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  margin-bottom: 32rpx;
+}
+
+.empty-button {
+  width: 200rpx;
+  height: 72rpx;
+  background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
+  border-radius: 36rpx;
+  color: #fff;
+  font-size: 26rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.empty-button:active {
+  opacity: 0.9;
+}

@@ -1,0 +1,45 @@
+<!--index.wxml-->
+<view class="page-container">
+  <!-- 标题 -->
+  <view class="header">
+    <text class="title">🎭 真心话大冒险</text>
+    <text class="subtitle">选择你的命运吧！</text>
+  </view>
+
+  <!-- 模式选择 -->
+  <view class="mode-selection">
+    <view class="mode-card truth {{selectedMode === 'truth' ? 'selected' : ''}}" bindtap="handleSelectMode" data-mode="truth">
+      <text class="mode-emoji">💬</text>
+      <text class="mode-name">真心话</text>
+    </view>
+    <view class="mode-card dare {{selectedMode === 'dare' ? 'selected' : ''}}" bindtap="handleSelectMode" data-mode="dare">
+      <text class="mode-emoji">🎯</text>
+      <text class="mode-name">大冒险</text>
+    </view>
+  </view>
+
+  <!-- 抽取按钮 -->
+  <view class="draw-button {{!selectedMode ? 'disabled' : ''}}" bindtap="handleDraw">
+    🎲 {{selectedMode ? '抽取 ' + (selectedMode === 'truth' ? '真心话' : '大冒险') : '请先选择模式'}}
+  </view>
+
+  <!-- 结果展示 -->
+  <view wx:if="{{currentResult}}" class="result-card">
+    <text class="result-type {{currentResult.mode}}">
+      {{currentResult.mode === 'truth' ? '💬 真心话' : '🎯 大冒险'}}
+    </text>
+    <view class="result-content">
+      <text>{{currentResult.content}}</text>
+    </view>
+  </view>
+
+  <!-- 下一轮 -->
+  <view wx:if="{{currentResult}}" class="next-button" bindtap="handleNextRound">
+    🔄 下一轮
+  </view>
+
+  <!-- 提示 -->
+  <text wx:if="{{!currentResult}}" class="tip">
+    💡 提示：点击上方按钮抽取本局第 {{history.length + 1}} 题
+  </text>
+</view>

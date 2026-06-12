@@ -1,0 +1,41 @@
+<!--questions.wxml-->
+<view class="page-container">
+  <!-- 类型切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{currentType === 'truth' ? 'active' : ''}}" bindtap="switchType" data-type="truth">
+      💬 真心话
+    </view>
+    <view class="tab-item {{currentType === 'dare' ? 'active' : ''}}" bindtap="switchType" data-type="dare">
+      🎯 大冒险
+    </view>
+  </view>
+
+  <!-- 分类筛选 -->
+  <view class="category-bar">
+    <view class="category-item {{currentCategory === 'all' ? 'active' : ''}}" bindtap="selectCategory" data-category="all">
+      全部
+    </view>
+    <view wx:for="{{categories}}" wx:key="name" class="category-item {{currentCategory === item.name ? 'active' : ''}}" bindtap="selectCategory" data-category="{{item.name}}">
+      {{item.name}}
+    </view>
+  </view>
+
+  <!-- 题目列表 -->
+  <view wx:if="{{filteredList.length > 0}}" class="question-list">
+    <view wx:for="{{filteredList}}" wx:key="id" class="question-item">
+      <view class="question-header">
+        <text class="question-tag {{currentType}}">{{currentType === 'truth' ? '真心话' : '大冒险'}}</text>
+        <text class="level-tag {{item.level}}">{{getLevelText(item.level)}}</text>
+      </view>
+      <view class="question-content">
+        {{currentType === 'truth' ? item.question : item.dare}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:else class="empty-tip">
+    <text class="empty-icon">📭</text>
+    <text class="empty-text">暂无相关题目</text>
+  </view>
+</view>

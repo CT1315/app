@@ -1,0 +1,50 @@
+<!--mine.wxml-->
+<view class="page-container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="avatar">
+      <text class="avatar-icon">👤</text>
+    </view>
+    <text class="username">玩家</text>
+    <text class="user-id">ID: 10086</text>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-card">
+    <view class="stats-row">
+      <view class="stat-item">
+        <text class="stat-value">{{stats.total}}</text>
+        <text class="stat-label">游戏次数</text>
+      </view>
+      <view class="divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.truth}}</text>
+        <text class="stat-label">真心话</text>
+      </view>
+      <view class="divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.dare}}</text>
+        <text class="stat-label">大冒险</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-list">
+    <view class="menu-item" bindtap="handleFeedback">
+      <text class="menu-icon">💬</text>
+      <text class="menu-text">意见反馈</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="handleAbout">
+      <text class="menu-icon">ℹ️</text>
+      <text class="menu-text">关于我们</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">
+    版本号: 1.0.0
+  </view>
+</view>

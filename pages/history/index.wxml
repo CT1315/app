@@ -1,0 +1,31 @@
+<!--history.wxml-->
+<view class="page-container">
+  <!-- 清除按钮 -->
+  <view wx:if="{{history.length > 0}}" class="clear-button" bindtap="clearHistory">
+    🗑️ 清除所有记录
+  </view>
+
+  <!-- 历史列表 -->
+  <view wx:if="{{history.length > 0}}" class="history-list">
+    <view wx:for="{{history}}" wx:key="timestamp" class="history-item">
+      <view class="history-header">
+        <text class="history-tag {{item.mode}}">
+          {{item.mode === 'truth' ? '💬 真心话' : '🎯 大冒险'}}
+        </text>
+        <text class="history-time">{{formatTime(item.timestamp)}}</text>
+      </view>
+      <view class="history-content">
+        {{item.content}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:else class="empty-tip">
+    <text class="empty-icon">📝</text>
+    <text class="empty-text">暂无游戏记录</text>
+    <view class="empty-button" bindtap="goToGame">
+      开始游戏
+    </view>
+  </view>
+</view>
