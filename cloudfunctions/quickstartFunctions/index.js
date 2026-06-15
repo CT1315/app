@@ -4,9 +4,16 @@ cloud.init({
 });
 
 const db = cloud.database();
+const _ = db.command;
+
+const initDatabase = async () => {
+  try { await db.createCollection('interactions'); } catch (e) {}
+  try { await db.createCollection('participations'); } catch (e) {}
+  return { success: true };
+};
+
 // 获取openid
 const getOpenId = async () => {
-  // 获取基础信息
   const wxContext = cloud.getWXContext();
   return {
     openid: wxContext.OPENID,
@@ -15,171 +22,147 @@ const getOpenId = async () => {
   };
 };
 
-// 获取小程序二维码
-const getMiniProgramCode = async () => {
-  // 获取小程序二维码的buffer
-  const resp = await cloud.openapi.wxacode.get({
-    path: "pages/index/index",
-  });
-  const { buffer } = resp;
-  // 将图片上传云存储空间
-  const upload = await cloud.uploadFile({
-    cloudPath: "code.png",
-    fileContent: buffer,
-  });
-  return upload.fileID;
-};
-
-// 创建集合
-const createCollection = async () => {
+// 创建互动
+const createInteraction = async (event) => {
+  const { title, type, content, options, deadline } = event.data;
+  const wxContext = cloud.getWXContext();
   try {
-    // 创建集合
-    await db.createCollection("sales");
-    await db.collection("sales").add({
-      // data 字段表示需新增的 JSON 数据
+    const result = await db.collection('interactions').add({
       data: {
-        region: "华东",
-        city: "上海",
-        sales: 11,
-      },
+        _openid: wxContext.OPENID,
+        title,
+        type,
+        content: content || '',
+        options: options || [],
+        deadline: deadline ? new Date(deadline) : null,
+        participants: [],
+        createdAt: new Date(),
+        status: 'active'
+      }
     });
-    await db.collection("sales").add({
-      // data 字段表示需新增的 JSON 数据
-      data: {
-        region: "华东",
-        city: "南京",
-        sales: 11,
-      },
-    });
-    await db.collection("sales").add({
-      // data 字段表示需新增的 JSON 数据
-      data: {
-        region: "华南",
-        city: "广州",
-        sales: 22,
-      },
-    });
-    await db.collection("sales").add({
-      // data 字段表示需新增的 JSON 数据
-      data: {
-        region: "华南",
-        city: "深圳",
-        sales: 22,
-      },
-    });
-    return {
-      success: true,
-    };
+    return { success: true, data: { _id: result._id } };
   } catch (e) {
-    // 这里catch到的是该collection已经存在，从业务逻辑上来说是运行成功的，所以catch返回success给前端，避免工具在前端抛出异常
-    return {
-      success: true,
-      data: "create collection success",
-    };
+    return { success: false, errMsg: e.message || e };
   }
 };
 
-// 查询数据
-const selectRecord = async () => {
-  // 返回数据库查询结果
-  return await db.collection("sales").get();
+// 获取互动列表
+const getInteractionList = async () => {
+  try {
+    const { data } = await db.collection('interactions').orderBy('createdAt', 'desc').limit(50).get();
+    return { success: true, data };
+  } catch (e) {
+    return { success: false, errMsg: e.message || e };
+  }
 };
 
-// 更新数据
-const updateRecord = async (event) => {
+// 获取互动详情
+const getInteractionDetail = async (event) => {
+  const { id } = event.data;
+  const wxContext = cloud.getWXContext();
   try {
-    // 遍历修改数据库信息
-    for (let i = 0; i < event.data.length; i++) {
-      await db
-        .collection("sales")
-        .where({
-          _id: event.data[i]._id,
-        })
-        .update({
-          data: {
-            sales: event.data[i].sales,
-          },
-        });
+    const { data: [detail] } = await db.collection('interactions').where({ _id: id }).get();
+    if (!detail) return { success: false, errMsg: 'not found' };
+
+    const { data: myParticipation } = await db.collection('participations').where({
+      interactionId: id,
+      _openid: wxContext.OPENID
+    }).get();
+
+    let isExpired = false;
+    if (detail.deadline && new Date(detail.deadline) < new Date()) {
+      isExpired = true;
     }
-    return {
-      success: true,
-      data: event.data,
-    };
+
+    return { success: true, data: { ...detail, hasParticipated: myParticipation.length > 0, isExpired } };
   } catch (e) {
-    return {
-      success: false,
-      errMsg: e,
-    };
+    return { success: false, errMsg: e.message || e };
   }
 };
 
-// 新增数据
-const insertRecord = async (event) => {
+// 参与互动
+const participate = async (event) => {
+  const { interactionId, type, content, choice } = event.data;
+  const wxContext = cloud.getWXContext();
   try {
-    const insertRecord = event.data;
-    // 插入数据
-    await db.collection("sales").add({
+    const { data: existing } = await db.collection('participations').where({
+      interactionId,
+      _openid: wxContext.OPENID
+    }).get();
+    if (existing.length > 0) {
+      return { success: false, errMsg: '你已经参与过了' };
+    }
+
+    const { data: [interaction] } = await db.collection('interactions').where({ _id: interactionId }).get();
+    if (!interaction) return { success: false, errMsg: '互动不存在' };
+    if (interaction.deadline && new Date(interaction.deadline) < new Date()) {
+      return { success: false, errMsg: '已截止' };
+    }
+
+    await db.collection('participations').add({
       data: {
-        region: insertRecord.region,
-        city: insertRecord.city,
-        sales: Number(insertRecord.sales),
-      },
+        _openid: wxContext.OPENID,
+        interactionId,
+        type,
+        content: content || choice || '',
+        choice: choice || '',
+        createdAt: new Date()
+      }
     });
-    return {
-      success: true,
-      data: event.data,
-    };
+
+    await db.collection('interactions').doc(interactionId).update({
+      data: {
+        participants: _.push(wxContext.OPENID)
+      }
+    });
+
+    return { success: true };
   } catch (e) {
-    return {
-      success: false,
-      errMsg: e,
-    };
+    return { success: false, errMsg: e.message || e };
   }
 };
 
-// 删除数据
-const deleteRecord = async (event) => {
+// 获取结果
+const getResults = async (event) => {
+  const { interactionId } = event.data;
   try {
-    await db
-      .collection("sales")
-      .where({
-        _id: event.data._id,
-      })
-      .remove();
-    return {
-      success: true,
-    };
+    const { data: participations } = await db.collection('participations').where({
+      interactionId
+    }).orderBy('createdAt', 'desc').get();
+
+    const { data: [interaction] } = await db.collection('interactions').where({ _id: interactionId }).get();
+    let voteStats = {};
+    if (interaction && interaction.type === 'vote' && interaction.options) {
+      interaction.options.forEach(opt => voteStats[opt] = 0);
+      participations.forEach(p => {
+        if (p.choice && voteStats[p.choice] !== undefined) {
+          voteStats[p.choice]++;
+        }
+      });
+    }
+
+    return { success: true, data: { participations, voteStats } };
   } catch (e) {
-    return {
-      success: false,
-      errMsg: e,
-    };
+    return { success: false, errMsg: e.message || e };
   }
 };
 
-// const getOpenId = require('./getOpenId/index');
-// const getMiniProgramCode = require('./getMiniProgramCode/index');
-// const createCollection = require('./createCollection/index');
-// const selectRecord = require('./selectRecord/index');
-// const updateRecord = require('./updateRecord/index');
-// const fetchGoodsList = require('./fetchGoodsList/index');
-// const genMpQrcode = require('./genMpQrcode/index');
 // 云函数入口函数
 exports.main = async (event, context) => {
   switch (event.type) {
+    case "initDatabase":
+      return await initDatabase();
     case "getOpenId":
       return await getOpenId();
-    case "getMiniProgramCode":
-      return await getMiniProgramCode();
-    case "createCollection":
-      return await createCollection();
-    case "selectRecord":
-      return await selectRecord();
-    case "updateRecord":
-      return await updateRecord(event);
-    case "insertRecord":
-      return await insertRecord(event);
-    case "deleteRecord":
-      return await deleteRecord(event);
+    case "createInteraction":
+      return await createInteraction(event);
+    case "getInteractionList":
+      return await getInteractionList();
+    case "getInteractionDetail":
+      return await getInteractionDetail(event);
+    case "participate":
+      return await participate(event);
+    case "getResults":
+      return await getResults(event);
   }
 };

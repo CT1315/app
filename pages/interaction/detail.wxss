@@ -1,0 +1,31 @@
+.page-container { padding: 20rpx; background: #f5f5f5; min-height: 100vh; }
+.loading { text-align: center; padding: 40rpx; color: #999; }
+.detail-card { background: #fff; border-radius: 16rpx; padding: 24rpx; }
+.detail-header { display: flex; justify-content: space-between; margin-bottom: 16rpx; }
+.type-tag { font-size: 22rpx; padding: 4rpx 12rpx; border-radius: 8rpx; background: #eee; color: #666; }
+.type-tag.vote { background: #FFE5E5; color: #FF6B6B; }
+.type-tag.event { background: #E5F3FF; color: #4D96F2; }
+.type-tag.message { background: #E5F5E5; color: #52C41A; }
+.time { font-size: 22rpx; color: #999; }
+.detail-title { font-size: 36rpx; font-weight: bold; color: #333; display: block; margin-bottom: 12rpx; }
+.detail-content { font-size: 30rpx; color: #666; display: block; margin-bottom: 16rpx; word-break: break-all; }
+.deadline { font-size: 26rpx; color: #999; margin-bottom: 20rpx; }
+.expired { color: #FF6B6B; }
+.section-title { font-size: 30rpx; font-weight: bold; color: #333; margin-top: 24rpx; margin-bottom: 16rpx; display: block; }
+.option-btn { border: 1rpx solid #ddd; border-radius: 12rpx; padding: 20rpx; margin-bottom: 16rpx; font-size: 30rpx; color: #333; text-align: center; }
+.option-btn.selected { border-color: #FF6B6B; background: #FFE5E5; color: #FF6B6B; }
+.textarea { border: 1rpx solid #eee; border-radius: 8rpx; padding: 16rpx; font-size: 28rpx; background: #fafafa; height: 160rpx; width: 100%; box-sizing: border-box; }
+.submit-btn { margin-top: 24rpx; background: #FF6B6B; color: #fff; text-align: center; padding: 24rpx; border-radius: 12rpx; font-size: 32rpx; }
+.results-area { margin-top: 24rpx; border-top: 1rpx solid #eee; padding-top: 16rpx; }
+.vote-bar-box { display: flex; align-items: center; margin-bottom: 16rpx; }
+.vote-label { width: 140rpx; font-size: 26rpx; color: #666; }
+.vote-bar-wrap { flex: 1; height: 24rpx; background: #f0f0f0; border-radius: 12rpx; overflow: hidden; }
+.vote-bar { height: 100%; background: #FF6B6B; border-radius: 12rpx; }
+.vote-count { width: 100rpx; font-size: 24rpx; color: #999; text-align: right; }
+.participant-item { padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5; font-size: 28rpx; color: #666; }
+.message-item { padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.msg-time { font-size: 24rpx; color: #999; display: block; margin-bottom: 8rpx; }
+.msg-content { font-size: 30rpx; color: #333; }
+.empty-result { text-align: center; padding: 40rpx; color: #999; font-size: 28rpx; }
+.participated-tip { margin-top: 24rpx; text-align: center; color: #52C41A; font-size: 28rpx; }
+.event-tip { font-size: 28rpx; color: #666; padding: 20rpx; background: #f9f9f9; border-radius: 8rpx; text-align: center; margin-bottom: 16rpx; }

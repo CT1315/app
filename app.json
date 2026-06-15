@@ -3,7 +3,10 @@
     "pages/index/index",
     "pages/questions/index",
     "pages/history/index",
-    "pages/mine/index"
+    "pages/mine/index",
+    "pages/interaction/index",
+    "pages/interaction/create",
+    "pages/interaction/detail"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -32,6 +35,10 @@
       {
         "pagePath": "pages/mine/index",
         "text": "我的"
+      },
+      {
+        "pagePath": "pages/interaction/index",
+        "text": "互动"
       }
     ]
   }

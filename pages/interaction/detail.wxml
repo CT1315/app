@@ -1,0 +1,75 @@
+<view class="page-container">
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+
+  <view wx:elif="{{detail}}" class="detail-card">
+    <view class="detail-header">
+      <text class="type-tag {{detail.type}}">{{typeLabel(detail.type)}}</text>
+      <text class="time">{{formatTime(detail.createdAt)}}</text>
+    </view>
+    <text class="detail-title">{{detail.title}}</text>
+    <text class="detail-content">{{detail.content}}</text>
+    <view wx:if="{{detail.deadline}}" class="deadline">
+      ⏰ 截止：{{formatTime(detail.deadline)}}
+      <text wx:if="{{detail.isExpired}}" class="expired">（已截止）</text>
+    </view>
+
+    <!-- 参与区 -->
+    <view wx:if="{{!detail.hasParticipated && !detail.isExpired}}" class="participate-area">
+      <text class="section-title">参与互动</text>
+      
+      <!-- 投票 -->
+      <view wx:if="{{detail.type === 'vote'}}">
+        <view wx:for="{{detail.options}}" wx:key="item" class="option-btn {{selectedOption === item ? 'selected' : ''}}" bindtap="selectOption" data-value="{{item}}">
+          {{item}}
+        </view>
+      </view>
+
+      <!-- 留言 -->
+      <view wx:if="{{detail.type === 'message'}}">
+        <textarea class="textarea" placeholder="写下你的留言..." value="{{replyContent}}" bindinput="onReplyChange" />
+      </view>
+
+      <!-- 活动 -->
+      <view wx:if="{{detail.type === 'event'}}" class="event-tip">
+        点击按钮即可报名参加活动
+      </view>
+
+      <view class="submit-btn" bindtap="submitParticipate">确认参与</view>
+    </view>
+
+    <!-- 结果区 -->
+    <view wx:if="{{showResults}}" class="results-area">
+      <text class="section-title">参与结果</text>
+
+      <!-- 投票统计 -->
+      <view wx:if="{{detail.type === 'vote'}}">
+        <view wx:for="{{detail.options}}" wx:key="item" class="vote-bar-box">
+          <text class="vote-label">{{item}}</text>
+          <view class="vote-bar-wrap">
+            <view class="vote-bar" style="width: {{(results.voteStats[item] || 0) / (results.participations.length || 1) * 100}}%"></view>
+          </view>
+          <text class="vote-count">{{results.voteStats[item] || 0}} 票</text>
+        </view>
+      </view>
+
+      <!-- 报名名单 -->
+      <view wx:if="{{detail.type === 'event'}}">
+        <view wx:if="{{results.participations.length === 0}}" class="empty-result">暂无报名</view>
+        <view wx:for="{{results.participations}}" wx:key="_id" class="participant-item">
+          <text>👤 用户 {{index + 1}} — {{formatTime(item.createdAt)}} 报名</text>
+        </view>
+      </view>
+
+      <!-- 留言列表 -->
+      <view wx:if="{{detail.type === 'message'}}">
+        <view wx:if="{{results.participations.length === 0}}" class="empty-result">暂无留言</view>
+        <view wx:for="{{results.participations}}" wx:key="_id" class="message-item">
+          <text class="msg-time">{{formatTime(item.createdAt)}}</text>
+          <text class="msg-content">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{detail.hasParticipated}}" class="participated-tip">✅ 你已参与</view>
+  </view>
+</view>

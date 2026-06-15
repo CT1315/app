@@ -1,0 +1,32 @@
+<view class="page-container">
+  <view class="form-card">
+    <text class="section-title">选择互动类型</text>
+    <view class="type-selector">
+      <view class="type-item {{type === 'vote' ? 'active' : ''}}" bindtap="selectType" data-type="vote">🗳️ 投票</view>
+      <view class="type-item {{type === 'event' ? 'active' : ''}}" bindtap="selectType" data-type="event">🎉 活动</view>
+      <view class="type-item {{type === 'message' ? 'active' : ''}}" bindtap="selectType" data-type="message">💬 留言</view>
+    </view>
+
+    <text class="section-title">标题</text>
+    <input class="input" placeholder="请输入标题" value="{{title}}" bindinput="onTitleChange" />
+
+    <text class="section-title" wx:if="{{type !== 'vote'}}">内容</text>
+    <textarea wx:if="{{type !== 'vote'}}" class="textarea" placeholder="请输入内容" value="{{content}}" bindinput="onContentChange" />
+
+    <text class="section-title" wx:if="{{type === 'vote'}}">投票选项</text>
+    <view wx:if="{{type === 'vote'}}" class="options-box">
+      <view wx:for="{{options}}" wx:key="index" class="option-row">
+        <input class="input option-input" placeholder="选项 {{index + 1}}" value="{{item}}" data-index="{{index}}" bindinput="onOptionChange" />
+        <text class="remove-btn" bindtap="removeOption" data-index="{{index}}">删除</text>
+      </view>
+      <view class="add-btn" bindtap="addOption">+ 添加选项</view>
+    </view>
+
+    <text class="section-title">截止时间（可选）</text>
+    <input class="input" placeholder="例如: 2025-12-31 23:59" value="{{deadline}}" bindinput="onDeadlineChange" />
+
+    <view class="submit-btn {{submitting ? 'disabled' : ''}}" bindtap="submit">
+      {{submitting ? '发布中...' : '发布互动'}}
+    </view>
+  </view>
+</view>

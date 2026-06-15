@@ -1,0 +1,29 @@
+<view class="page-container">
+  <view class="header-bar">
+    <text class="page-title">🎉 互动广场</text>
+    <view class="create-btn" bindtap="goCreate">+ 发起互动</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+
+  <view wx:elif="{{list.length === 0}}" class="empty-state">
+    <text class="empty-icon">📝</text>
+    <text class="empty-text">暂无互动内容</text>
+    <text class="empty-tip">点击右上角发起第一个互动吧</text>
+  </view>
+
+  <view wx:else class="interaction-list">
+    <view wx:for="{{list}}" wx:key="_id" class="card" bindtap="goDetail" data-id="{{item._id}}">
+      <view class="card-header">
+        <text class="type-tag {{item.type}}">{{typeLabel(item.type)}}</text>
+        <text class="time">{{formatTime(item.createdAt)}}</text>
+      </view>
+      <text class="card-title">{{item.title}}</text>
+      <text class="card-desc">{{item.content}}</text>
+      <view class="card-footer">
+        <text class="status">{{item.isExpired ? '已截止' : '进行中'}}</text>
+        <text class="count">{{item.participants.length || 0}} 人参与</text>
+      </view>
+    </view>
+  </view>
+</view>
